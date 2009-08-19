@@ -1,0 +1,17 @@
+Pick.
+
+Takes in a bunch of lines of input and randomly picks one to put to output.
+
+Mostly I just got tired of making a new "Random _____ Generator" script every time.
+
+Now I can do:
+echo -e "Pizza\nChips\nBurger\nStarve" | pick
+
+And it'll tell me what my dinner plans are!
+Bonus!
+
+Also good for choosing which episode of a show, or a movies, to watch, perhaps without me even knowing which episode it is:
+find SomeShow/ | pick | xargs open
+
+Yes!
+Great!

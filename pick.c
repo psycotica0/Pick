@@ -44,16 +44,7 @@ int main (int argc, char* argv[]) {
 	/* I like srandomdev better, but it's only on BSD */
 	srandomdev();
 	#else
-	{
-		FILE* urand = fopen("/dev/urandom", "r");
-		if (urand == NULL) {
-			/* If we can't get urand, just use the curent time */
-			srandom(time(NULL));
-		} else {
-			srandom(fgetc(urand));
-			fclose(urand);
-		}
-	}
+	srandom(time(NULL));
 	#endif
 
 	while (!feof(stdin)) {

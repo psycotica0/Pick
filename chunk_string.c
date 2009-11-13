@@ -61,3 +61,11 @@ void chunk_printline(FILE* stream, string_chunk* chunk) {
 	}
 }
 
+string_chunk* new_chunk_string() {
+	string_chunk* ret = NULL;
+	ret = malloc(sizeof(string_chunk));
+	ret->next = NULL;
+
+	return ret;
+}
+

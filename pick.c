@@ -2,14 +2,6 @@
 #include <stdio.h>
 #include "chunk_string.h"
 
-string_chunk* newString() {
-	string_chunk* ret = NULL;
-	ret = malloc(sizeof(string_chunk));
-	ret->next = NULL;
-
-	return ret;
-}
-
 /* This gives a number in the range of low and high, inclusively. */
 /* That is, randBetween(1,5) could give 1,2,3,4,5. */
 int randBetween (int low, int high) {
@@ -17,8 +9,8 @@ int randBetween (int low, int high) {
 }
 
 int main (int argc, char* argv[]) {
-	string_chunk* current = newString();
-	string_chunk* temp = newString();
+	string_chunk* current = new_chunk_string();
+	string_chunk* temp = new_chunk_string();
 	int number = 0;
 
 	#ifdef S_RAND_DEV

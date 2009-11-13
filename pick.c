@@ -3,6 +3,11 @@
 #include "chunk_string.h"
 #include "chunk_list.h"
 
+/* On BSD, srandomdev() is better */
+#ifndef seedRand
+#define seedRand srandom(time(NULL))
+#endif
+
 int main (int argc, char* argv[]) {
 	chunk_list* list = NULL;
 	string_chunk* current = NULL;
@@ -19,7 +24,7 @@ int main (int argc, char* argv[]) {
 		}
 	}
 
-	srandomdev();
+	seedRand;
 	number = random() % number;
 
 	chunk_printline(stdout, getChunk(list, number));

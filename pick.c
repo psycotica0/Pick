@@ -2,11 +2,6 @@
 #include <stdio.h>
 #include "chunk_string.h"
 
-/* On BSD, srandomdev() is better */
-#ifndef seedRand
-#define seedRand srandom(time(NULL))
-#endif
-
 string_chunk* newString() {
 	string_chunk* ret = NULL;
 	ret = malloc(sizeof(string_chunk));
@@ -26,7 +21,21 @@ int main (int argc, char* argv[]) {
 	string_chunk* temp = newString();
 	int number = 0;
 
-	seedRand;
+	#ifdef S_RAND_DEV
+	/* I like srandomdev better, but it's only on BSD */
+	srandomdev();
+	#else
+	{
+		FILE* urand = fopen("/dev/urandom", "r");
+		if (urand == NULL) {
+			/* If we can't get urand, just use the curent time */
+			srandom(time(NULL));
+		} else {
+			srandom(fgetc(urand));
+			fclose(urand);
+		}
+	}
+	#endif
 
 	while (!feof(stdin)) {
 		if (chunk_readline(stdin, temp) > 0) {

@@ -15,3 +15,23 @@ find SomeShow/ | pick | xargs open
 
 Yes!
 Great!
+
+Also, if you're planning on choosing more than one thing you can tell pick to give you more than one.
+
+find SomeShow/ | pick 5 
+will give you 5 episodes of SomeShow.
+
+This is better than, and more random than, running pick on the output of find 5 times.
+
+
+THINGS TO KNOW:
+Pick doesn't distinguish between duplicates.
+If you ask pick for two items, they could both be the same.
+This does, however, allow you to ask it for more items than you give it.
+You could pick 100 numbers between 1 and 10, for example.
+
+Also, the default way that Pick is compiled it uses the current number of seconds as a seed value.
+This means that if pick is run on the same input more than once per second, you will get the same output every time.
+This is not the case if you ask pick for more than one item and only run it once, though.
+So, if you want 100 numbers between 1 and 10, it's better to run `seq 1 100 | pick 100` than to run `seq 1 100 | pick` 100 times.
+If you run it 100 times, chances are you're going to get the same number 100 times.

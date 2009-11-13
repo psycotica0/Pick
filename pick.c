@@ -1,32 +1,50 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "chunk_string.h"
-#include "chunk_list.h"
 
 /* On BSD, srandomdev() is better */
 #ifndef seedRand
 #define seedRand srandom(time(NULL))
 #endif
 
+string_chunk* newString() {
+	string_chunk* ret = NULL;
+	ret = malloc(sizeof(string_chunk));
+	ret->next = NULL;
+
+	return ret;
+}
+
+/* This gives a number in the range of low and high, inclusively. */
+/* That is, randBetween(1,5) could give 1,2,3,4,5. */
+int randBetween (int low, int high) {
+	return (random() % (high - low + 1)) + low;
+}
+
 int main (int argc, char* argv[]) {
-	chunk_list* list = NULL;
-	string_chunk* current = NULL;
+	string_chunk* current = newString();
+	string_chunk* temp = newString();
 	int number = 0;
 
-	list = malloc(sizeof(chunk_list));
-	list->next = NULL;
-	list->value = NULL;
+	seedRand;
 
 	while (!feof(stdin)) {
-		current = newString(list);
-		if (chunk_readline(stdin, current) > 0) {
+		if (chunk_readline(stdin, temp) > 0) {
+			/* Not a blank line */
 			number++;
+			/* Now we make a random number between 1 and number. If it's 1, we swap temp and current. Otherwise, we leave it as it is. */
+			/* This should, as number increases, guarantee that by the end, all lines will have had equal 1/n chance of making it to the end. */
+			if (randBetween(1,number) == 1) {
+				/* We should now swap temp and current */
+				{
+					string_chunk* swap = current;
+					current = temp;
+					temp = swap;
+				}
+			}
 		}
 	}
 
-	seedRand;
-	number = random() % number;
-
-	chunk_printline(stdout, getChunk(list, number));
+	chunk_printline(stdout, current);
 	return 0;
 }

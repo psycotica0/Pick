@@ -36,12 +36,8 @@ int main (int argc, char* argv[]) {
 			/* Now we make a random number between 1 and number. If it's 1, we swap temp and current. Otherwise, we leave it as it is. */
 			/* This should, as number increases, guarantee that by the end, all lines will have had equal 1/n chance of making it to the end. */
 			if (randBetween(1,number) == 1) {
-				/* We should now swap temp and current */
-				{
-					string_chunk* swap = current;
-					current = temp;
-					temp = swap;
-				}
+				/* We should now copy temp to current */
+				chunk_string_copy(temp, current);
 			}
 		}
 	}

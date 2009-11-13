@@ -69,3 +69,32 @@ string_chunk* new_chunk_string() {
 	return ret;
 }
 
+void chunk_string_copy(string_chunk* src, string_chunk* dst) {
+	string_chunk* currentSrc = src;
+	string_chunk* currentDst = dst;
+	int i;
+
+	while (currentSrc != NULL) {
+		for (i = 0; i < CHUNK_SIZE; i++) {
+			currentDst->value[i] = currentSrc->value[i];
+			if (currentDst->value[i] == '\0') goto found_null;
+		}
+
+		if (currentSrc->next != NULL && currentDst->next == NULL) {
+			currentDst->next = malloc(sizeof(string_chunk));
+			currentDst->next->next = NULL;
+		} else if (currentSrc->next == NULL && currentDst->next != NULL) {
+			/* Here we have currentSrc ending on a multiple of CHUNK_SIZE*/
+			/* This means src is delimited by a NULL next. */
+			/* currentDst, though, is bigger than that. */
+			/* In order to fix this, we put a null character as the first char of currentDst->next */
+			/* The only other option would have been to orphan the rest of the string */
+			currentDst->next->value[0] = '\0';
+		}
+
+		currentSrc = currentSrc->next;
+		currentDst = currentDst->next;
+	}
+found_null:
+	return;
+}

@@ -30,8 +30,12 @@ int chunk_readline_count(FILE* stream, string_chunk* chunk, int read) {
 	}
 
 	ungetc(temp, stream);
-	chunk->next = malloc(sizeof(string_chunk));
-	chunk->next->next = NULL;
+	if (chunk->next == NULL) {
+		/* Only allocate a new chunk if we don't already have one to blow over. */
+		/* With this, this ends up being almost vector like. */
+		chunk->next = malloc(sizeof(string_chunk));
+		chunk->next->next = NULL;
+	}
 	if (chunk->next == NULL) {
 		return;
 	}

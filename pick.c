@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "chunk_string.h"
 
 /* This gives a number in the range of low and high, inclusively. */

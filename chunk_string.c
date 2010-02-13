@@ -37,7 +37,7 @@ int chunk_readline_count(FILE* stream, string_chunk* chunk, int read) {
 		chunk->next->next = NULL;
 	}
 	if (chunk->next == NULL) {
-		return;
+		return read;
 	}
 
 	return chunk_readline_count(stream, chunk->next, read);
